@@ -40,7 +40,7 @@ export default class extends ApolloServerPluginBase {
     // the default in-memory store, or other stateful store resource.
     const cache = persistedQueries.cache;
 
-    this.agent = new Agent({ schemaHash, engine, cache });
+    this.agent = new Agent({ schemaHash, engine, cache, debug: true });
     await this.agent.start();
   }
 

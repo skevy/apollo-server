@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "Apollo <npm@apollographql.com>",
-  "license": "Copyright (c) Meteor Development Group, Inc.; See LICENSE",
+  "license": "Copyright (c) Meteor Development Group, Inc.; See LICENSE.md.",
   "engines": {
     "node": ">=6"
   },

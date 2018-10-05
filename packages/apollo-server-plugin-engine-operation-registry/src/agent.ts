@@ -51,14 +51,14 @@ export default class Agent {
   }
 
   async start() {
-    // Make sure the timer is running.
-    await this.checkForUpdate();
+    // This is what we'll trigger at a regular interval.
+    const pulse = async () => await this.checkForUpdate();
 
-    this.timer =
-      this.timer ||
-      setInterval(async () => {
-        await this.checkForUpdate();
-      }, this.pollSeconds() * 1000);
+    // The first pulse should happen before we start the timer.
+    await pulse();
+
+    // Afterward, keep it going.
+    this.timer = this.timer || setInterval(pulse, this.pollSeconds() * 1000);
   }
 
   private timeSinceLastSuccessfulCheck() {

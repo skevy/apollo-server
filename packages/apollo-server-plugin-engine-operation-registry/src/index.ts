@@ -30,7 +30,17 @@ export default class extends ApolloServerPluginBase {
       );
     }
 
-    this.agent = new Agent({ schemaHash, engine });
+    if (!persistedQueries || !persistedQueries.cache) {
+      throw new Error(
+        `${pluginName}: Persisted queries must be enabled to use the operation registry.`,
+      );
+    }
+
+    // We use which ever cache store is in place for persisted queries, be that
+    // the default in-memory store, or other stateful store resource.
+    const cache = persistedQueries.cache;
+
+    this.agent = new Agent({ schemaHash, engine, cache });
     await this.agent.start();
   }
 

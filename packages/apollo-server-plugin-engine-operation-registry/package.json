@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "apollo-server-plugin-base": "file:../apollo-server-plugin-base",
+    "apollo-server-caching": "file:../apollo-server-caching",
     "json-stable-stringify": "1.0.1",
     "node-fetch": "2.2.0"
   },

@@ -1,26 +1,26 @@
 import * as assert from 'assert';
 import { pluginName } from './common';
-import { ApolloServerPlugin } from 'apollo-server-plugin-base';
+import {
+  ApolloServerPlugin,
+  GraphQLServiceContext,
+  GraphQLRequestListener,
+} from 'apollo-server-plugin-base';
 import Agent from './agent';
 import { GraphQLSchema } from 'graphql/type';
 import { generateSchemaHash } from './schema';
 
-class RequestListener extends ApolloServerRequestListenerBase {
-  start() {
-    console.log('Request started');
-  }
-}
+export default class extends ApolloServerPlugin {
+  private agent?: Agent;
 
-export default class extends ApolloServerPluginBase {
   async serverWillStart({
     schema,
     engine,
     persistedQueries,
-  }: PluginEventServerWillStart['args']): Promise<void> {
+  }: GraphQLServiceContext): Promise<void> {
     assert.ok(schema instanceof GraphQLSchema);
     const schemaHash = await generateSchemaHash(schema);
 
-    if (!engine || !engine.serviceId) {
+    if (!engine || !engine.serviceID) {
       throw new Error(
         `${pluginName}: The Engine API key must be set to use the operation registry.`,
       );
@@ -40,8 +40,12 @@ export default class extends ApolloServerPluginBase {
     await this.agent.start();
   }
 
-  requestDidStart() {
+  requestDidStart(): GraphQLRequestListener<any> {
     console.log('Here comes the request listener.');
-    return new RequestListener();
+    return {
+      async prepareRequest({ request }) {
+        console.log(request);
+      },
+    };
   }
 }

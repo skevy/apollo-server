@@ -1,5 +1,6 @@
 {
   "name": "apollo-server-monorepo",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "repository": "github:apollographql/apollo-server",
@@ -9,7 +10,7 @@
     "compile:clean": "tsc --build tsconfig.build.json --clean",
     "watch": "tsc --build tsconfig.build.json --watch",
     "release": "npm run clean && npm ci && lerna publish --exact",
-    "postinstall": "lerna run prepare && npm run compile",
+    "precommit": "lint-staged",
     "lint": "prettier-check '**/*.{js,ts}'",
     "lint-fix": "prettier '**/*.{js,ts}' --write",
     "test": "jest --verbose",
@@ -132,6 +133,11 @@
   "jest": {
     "projects": [
       "<rootDir>/packages/*"
+    ]
+  },
+  "workspaces": {
+    "nohoist": [
+      "subscriptions-transport-ws"
     ]
   }
 }

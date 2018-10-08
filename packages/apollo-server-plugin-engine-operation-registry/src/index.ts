@@ -1,10 +1,6 @@
 import * as assert from 'assert';
 import { pluginName } from './common';
-import {
-  ApolloServerPluginBase,
-  ApolloServerRequestListenerBase,
-  PluginEventServerWillStart,
-} from 'apollo-server-plugin-base';
+import { ApolloServerPlugin } from 'apollo-server-plugin-base';
 import Agent from './agent';
 import { GraphQLSchema } from 'graphql/type';
 import { generateSchemaHash } from './schema';

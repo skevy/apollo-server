@@ -8,9 +8,11 @@ import {
 import Agent from './agent';
 import { GraphQLSchema } from 'graphql/type';
 import { generateSchemaHash } from './schema';
+import { KeyValueCache } from 'apollo-server-caching';
 
 export default class extends ApolloServerPlugin {
   private agent?: Agent;
+  private cache?: KeyValueCache;
 
   async serverWillStart({
     schema,
@@ -26,6 +28,8 @@ export default class extends ApolloServerPlugin {
       );
     }
 
+    console.log('ENGINE', engine);
+
     if (!persistedQueries || !persistedQueries.cache) {
       throw new Error(
         `${pluginName}: Persisted queries must be enabled to use the operation registry.`,
@@ -34,17 +38,22 @@ export default class extends ApolloServerPlugin {
 
     // We use which ever cache store is in place for persisted queries, be that
     // the default in-memory store, or other stateful store resource.
-    const cache = persistedQueries.cache;
+    const cache = (this.cache = persistedQueries.cache);
 
     this.agent = new Agent({ schemaHash, engine, cache, debug: true });
     await this.agent.start();
   }
 
   requestDidStart(): GraphQLRequestListener<any> {
-    console.log('Here comes the request listener.');
+    const cache = this.cache;
+
+    if (!this.cache) {
+      throw new Error('Unable to access required cache.');
+    }
+
     return {
-      async prepareRequest({ request }) {
-        console.log(request);
+      async prepareRequest() {
+        console.log(cache);
       },
     };
   }

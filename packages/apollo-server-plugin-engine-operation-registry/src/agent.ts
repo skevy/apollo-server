@@ -42,7 +42,7 @@ export default class Agent {
     return (this.hashedServiceId =
       this.hashedServiceId ||
       createHash('sha512')
-        .update(this.options.engine.serviceId)
+        .update(this.options.engine.serviceID)
         .digest('hex'));
   }
 

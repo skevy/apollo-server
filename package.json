@@ -1,5 +1,6 @@
 {
   "name": "apollo-server-monorepo",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "repository": "github:apollographql/apollo-server",
@@ -8,7 +9,6 @@
     "compile": "lerna run compile",
     "release": "npm run clean && npm ci && lerna publish --exact",
     "precommit": "lint-staged",
-    "postinstall": "lerna run prepare",
     "lint": "prettier-check '**/*.{js,ts}'",
     "lint-fix": "prettier '**/*.{js,ts}' --write",
     "test": "jest --verbose",
